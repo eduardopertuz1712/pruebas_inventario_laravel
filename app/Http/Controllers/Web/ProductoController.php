@@ -9,6 +9,6 @@ class ProductoController extends Controller
 {
     public function index()
     {
-        return view('products.index');
+        return view('components.products.index');
     }
 }

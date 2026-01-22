@@ -18,7 +18,6 @@
     </head>
     <body>
         <div class="space-between m-10">
-            <h1 class="flex justify-center text-3xl font-bold">Welcome to my product page</h1>
             <div>
                 <x-products.index />
             </div>
