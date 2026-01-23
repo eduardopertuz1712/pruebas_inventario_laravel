@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Producto extends Model
@@ -12,19 +13,20 @@ class Producto extends Model
     |--------------------------------------------------------------------------
     */
 
+    use HasFactory;
     // protected $table = 'products';
     // protected $primaryKey = 'id';
     // public $timestamps = false; // Si no quieres created_at/updated_at
     // protected $guarded = []; // Alternativa a $fillable (todos menos estos)
     protected $fillable = [
-        'name',
-        'description',
-        'price',
+        'nombre',
+        'descripcion',
+        'precio',
         'stock'
     ];
 
     protected $casts = [
-        'price' => 'decimal:2',
+        'precio' => 'decimal:2',
         'stock' => 'integer'
     ];
 

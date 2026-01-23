@@ -1,16 +1,10 @@
 <?php
-use App\Http\Controllers\Web\ProductoController;
-use App\Http\Controllers\Web\HomeController;
+use App\Http\Controllers\ProductoController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', [HomeController::class, 'home']);
+Route::get('/', function () {
+    return redirect()->route('productos.index');
+});
 
-Route::get('/editar/zapatillas', [HomeController::class, 'editar'])->name('editar');
-
-Route::get('/editar/audifonos', [HomeController::class, 'editar_producto'])->name('editar_producto');
-
-Route::get('/editar/smartwatch', [HomeController::class, 'editar_smartwatch'])->name('editar_smartwatch');
-
-Route::get('/actualizar/zapatillas', [HomeController::class, 'actualizar'])->name('actualizar');
-
-Route::get('/productos', [ProductoController::class, 'index']);
+// Rutas para productos (CRUD)
+Route::resource('productos', ProductoController::class);
