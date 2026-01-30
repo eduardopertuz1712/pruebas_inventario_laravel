@@ -16,12 +16,23 @@ class DatabaseSeeder extends Seeder
     {
         // User::factory(10)->withPersonalTeam()->create();
 
-        User::factory()->withPersonalTeam()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
+        // Crear un usuario admin y un usuario normal
+        $admin = User::factory()->withPersonalTeam()->create([
+            'name' => 'Admin User',
+            'email' => 'admin@example.com',
+            'role' => 'admin',
         ]);
 
-        // Crear productos
-        Producto::factory(20)->create();
+        $user = User::factory()->withPersonalTeam()->create([
+            'name' => 'Test User',
+            'email' => 'test@example.com',
+            'role' => 'user',
+        ]);
+
+        // Crear productos y asignarlos aleatoriamente a usuarios existentes
+        Producto::factory(20)->create()->each(function ($producto) use ($admin, $user) {
+            $producto->user_id = rand(0,1) ? $admin->id : $user->id;
+            $producto->save();
+        });
     }
 }

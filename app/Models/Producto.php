@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\User;
 
 class Producto extends Model
 {
@@ -22,7 +23,8 @@ class Producto extends Model
         'nombre',
         'descripcion',
         'precio',
-        'stock'
+        'stock',
+        'user_id'
     ];
 
     protected $casts = [
@@ -50,6 +52,11 @@ class Producto extends Model
     | RELATIONS
     |--------------------------------------------------------------------------
     */
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 
     /*
     |--------------------------------------------------------------------------

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Producto;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ProductoController extends Controller
 {
@@ -12,7 +13,13 @@ class ProductoController extends Controller
      */
     public function index()
     {
-        $productos = Producto::paginate(5); // Muestra 5 productos por página
+        $user = Auth::user();
+
+        if ($user && $user->role === 'admin') {
+            $productos = Producto::paginate(5); // admin ve todos
+        } else {
+            $productos = Producto::where('user_id', $user->id ?? 0)->paginate(5); // usuario ve solo los suyos
+        }
         return view('productos.index', compact('productos'));
     }
 
@@ -21,6 +28,10 @@ class ProductoController extends Controller
      */
     public function show(Producto $producto)
     {
+        $user = Auth::user();
+        if ($user->role !== 'admin' && $producto->user_id !== $user->id) {
+            abort(403);
+        }
         return view('productos.show', compact('producto'));
     }
 
@@ -45,7 +56,9 @@ class ProductoController extends Controller
             'stock' => 'required|integer|min:0',
         ]);
 
-        // Crear el producto
+        $validated['user_id'] = Auth::id();
+
+        // Crear el producto (asociado al usuario autenticado)
         Producto::create($validated);
 
         return redirect()->route('productos.index')
@@ -57,6 +70,10 @@ class ProductoController extends Controller
      */
     public function edit(Producto $producto)
     {
+        $user = Auth::user();
+        if ($user->role !== 'admin' && $producto->user_id !== $user->id) {
+            abort(403);
+        }
         return view('productos.edit', compact('producto'));
     }
 
@@ -73,6 +90,11 @@ class ProductoController extends Controller
             'stock' => 'required|integer|min:0',
         ]);
 
+        $user = Auth::user();
+        if ($user->role !== 'admin' && $producto->user_id !== $user->id) {
+            abort(403);
+        }
+
         // Actualizar el producto
         $producto->update($validated);
 
@@ -85,6 +107,11 @@ class ProductoController extends Controller
      */
     public function destroy(Producto $producto)
     {
+        $user = Auth::user();
+        if ($user->role !== 'admin' && $producto->user_id !== $user->id) {
+            abort(403);
+        }
+
         $nombre = $producto->nombre;
         $producto->delete();
 
