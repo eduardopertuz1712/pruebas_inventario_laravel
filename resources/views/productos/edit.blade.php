@@ -18,7 +18,7 @@
                     </div>
                 @endif
 
-                <form action="{{ route('productos.update', $producto->id) }}" method="POST" class="max-w-md">
+                <form action="{{ route('productos.update', $producto->id) }}" method="POST" enctype="multipart/form-data" class="max-w-md">
                     @csrf
                     @method('PUT')
 
@@ -44,6 +44,17 @@
                         <label for="stock" class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Stock (cantidad)</label>
                         <input type="number" id="stock" name="stock" value="{{ old('stock', $producto->stock) }}" min="0" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded dark:bg-gray-700 dark:text-gray-200 focus:outline-none focus:border-blue-500" required>
                         @error('stock')<span class="text-red-500 text-sm">{{ $message }}</span>@enderror
+                    </div>
+
+                    <div class="mb-6">
+                        <label for="imagen" class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Imagen del producto (opcional)</label>
+                        @if($producto->imagen)
+                            <div class="mb-2">
+                                <img src="{{ asset('storage/' . $producto->imagen) }}" alt="{{ $producto->nombre }}" class="w-32 h-32 object-cover rounded">
+                            </div>
+                        @endif
+                        <input type="file" id="imagen" name="imagen" accept="image/*" class="w-full">
+                        @error('imagen')<span class="text-red-500 text-sm">{{ $message }}</span>@enderror
                     </div>
 
                     <div class="flex gap-4">

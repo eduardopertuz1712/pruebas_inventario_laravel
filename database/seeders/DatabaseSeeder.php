@@ -29,10 +29,13 @@ class DatabaseSeeder extends Seeder
             'role' => 'user',
         ]);
 
-        // Crear productos y asignarlos aleatoriamente a usuarios existentes
-        Producto::factory(20)->create()->each(function ($producto) use ($admin, $user) {
-            $producto->user_id = rand(0,1) ? $admin->id : $user->id;
-            $producto->save();
-        });
+        // Crear un único producto asignado al admin (el resto los añadirá el usuario manualmente)
+        Producto::factory()->create([
+            'nombre' => 'Producto Inicial',
+            'descripcion' => 'Producto inicial creado solo para la cuenta admin y verificaion de existencia de producto',
+            'precio' => 9.99,
+            'stock' => 10,
+            'user_id' => $admin->id,
+        ]);
     }
 }

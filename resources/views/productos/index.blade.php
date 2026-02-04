@@ -26,6 +26,7 @@
                         <thead class="bg-gray-200 dark:bg-gray-600">
                             <tr>
                                 <th class="px-6 py-3 text-left text-sm font-semibold text-gray-700 dark:text-gray-200">ID</th>
+                                <th class="px-6 py-3 text-left text-sm font-semibold text-gray-700 dark:text-gray-200">Imagen</th>
                                 <th class="px-6 py-3 text-left text-sm font-semibold text-gray-700 dark:text-gray-200">Nombre</th>
                                 <th class="px-6 py-3 text-left text-sm font-semibold text-gray-700 dark:text-gray-200">Descripción</th>
                                 <th class="px-6 py-3 text-left text-sm font-semibold text-gray-700 dark:text-gray-200">Precio</th>
@@ -37,6 +38,13 @@
                             @forelse($productos as $producto)
                                 <tr class="hover:bg-gray-50 dark:hover:bg-gray-600">
                                     <td class="px-6 py-4 text-sm text-gray-600 dark:text-gray-300">{{ $producto->id }}</td>
+                                    <td class="px-6 py-4 text-sm">
+                                        @if($producto->imagen)
+                                            <img src="{{ asset('storage/' . $producto->imagen) }}" alt="{{ $producto->nombre }}" class="w-16 h-16 object-cover rounded">
+                                        @else
+                                            <div class="w-16 h-16 bg-gray-100 dark:bg-gray-600 rounded flex items-center justify-center text-xs text-gray-500">No imagen</div>
+                                        @endif
+                                    </td>
                                     <td class="px-6 py-4 text-sm font-medium text-gray-800 dark:text-gray-200">{{ $producto->nombre }}</td>
                                     <td class="px-6 py-4 text-sm text-gray-600 dark:text-gray-300">
                                         {{ Str::limit($producto->descripcion, 50) }}

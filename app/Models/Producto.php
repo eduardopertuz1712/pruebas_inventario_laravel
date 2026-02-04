@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\User;
+use Illuminate\Support\Facades\Storage;
 
 class Producto extends Model
 {
@@ -24,7 +25,8 @@ class Producto extends Model
         'descripcion',
         'precio',
         'stock',
-        'user_id'
+        'user_id',
+        'imagen'
     ];
 
     protected $casts = [
@@ -56,6 +58,14 @@ class Producto extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function getImagenUrlAttribute()
+    {
+        if ($this->imagen) {
+            return Storage::url($this->imagen);
+        }
+        return null;
     }
 
     /*

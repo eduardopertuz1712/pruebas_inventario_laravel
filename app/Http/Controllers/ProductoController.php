@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Producto;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class ProductoController extends Controller
 {
@@ -54,9 +55,16 @@ class ProductoController extends Controller
             'descripcion' => 'nullable|string',
             'precio' => 'required|numeric|min:0.01',
             'stock' => 'required|integer|min:0',
+            'imagen' => 'nullable|image|max:2048',
         ]);
 
         $validated['user_id'] = Auth::id();
+
+        // Manejar la imagen si se envió
+        if ($request->hasFile('imagen')) {
+            $path = $request->file('imagen')->store('productos', 'public');
+            $validated['imagen'] = $path;
+        }
 
         // Crear el producto (asociado al usuario autenticado)
         Producto::create($validated);
@@ -88,6 +96,7 @@ class ProductoController extends Controller
             'descripcion' => 'nullable|string',
             'precio' => 'required|numeric|min:0.01',
             'stock' => 'required|integer|min:0',
+            'imagen' => 'nullable|image|max:2048',
         ]);
 
         $user = Auth::user();
@@ -96,6 +105,15 @@ class ProductoController extends Controller
         }
 
         // Actualizar el producto
+        if ($request->hasFile('imagen')) {
+            // eliminar imagen anterior si existe
+            if ($producto->imagen) {
+                Storage::disk('public')->delete($producto->imagen);
+            }
+            $path = $request->file('imagen')->store('productos', 'public');
+            $validated['imagen'] = $path;
+        }
+
         $producto->update($validated);
 
         return redirect()->route('productos.index')
@@ -110,6 +128,11 @@ class ProductoController extends Controller
         $user = Auth::user();
         if ($user->role !== 'admin' && $producto->user_id !== $user->id) {
             abort(403);
+        }
+
+        // eliminar imagen asociada
+        if ($producto->imagen) {
+            Storage::disk('public')->delete($producto->imagen);
         }
 
         $nombre = $producto->nombre;

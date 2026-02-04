@@ -15,6 +15,11 @@
 
                     <div class="grid grid-cols-2 gap-6 mb-6">
                         <div>
+                            @if($producto->imagen)
+                                <img src="{{ asset('storage/' . $producto->imagen) }}" alt="{{ $producto->nombre }}" class="w-full max-h-96 object-cover rounded mb-4">
+                            @endif
+                        </div>
+                        <div>
                             <p class="text-gray-600 dark:text-gray-400 text-sm">Precio</p>
                             <p class="text-3xl font-bold text-blue-600 dark:text-blue-400">${{ number_format($producto->precio, 2) }}</p>
                         </div>
