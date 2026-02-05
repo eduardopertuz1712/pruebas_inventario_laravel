@@ -10,9 +10,9 @@
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-xl sm:rounded-lg p-6">
                 @if(isset($isAdmin) && $isAdmin)
                     <h3 class="font-semibold text-xl text-gray-800 dark:text-gray-200 mb-6">Usuarios registrados</h3>
-                    <div class="bg-white dark:bg-gray-700 rounded-lg shadow-md overflow-hidden">
+                    <div class=" dark:bg-gray-700 rounded-lg shadow-md overflow-hidden">
                         <table class="min-w-full">
-                            <thead class="bg-gray-200 dark:bg-gray-600">
+                            <thead class=" dark:bg-gray-600">
                                 <tr>
                                     <th class="px-6 py-3 text-left text-sm font-semibold text-gray-700 dark:text-gray-200">ID</th>
                                     <th class="px-6 py-3 text-left text-sm font-semibold text-gray-700 dark:text-gray-200">Nombre</th>
